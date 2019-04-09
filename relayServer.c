@@ -146,11 +146,11 @@ int main(int argc, char *argv[])
   while(!sigint_rec) {
     // Recieve data from source
     inMsgLen = recvfrom(sockfd, (char *) buffer, bufSz, MSG_WAITALL,
-			                  (struct sockaddr *) &srcAddr, &srcLen);
+			(struct sockaddr *) &srcAddr, &srcLen);
 
     if(inMsgLen == -1) {
       if(errno == EINTR) {
-	      continue;
+	continue;
       }
       perror("recvfrom failure");
     }
@@ -159,13 +159,13 @@ int main(int argc, char *argv[])
     if(!packet_lost(lossRate)) {
       // Forward recieved data to destination
       outMsgLen = sendto(sockfd, (const char *) buffer, inMsgLen, MSG_CONFIRM,
-												 (const struct sockaddr *) &destAddr, destLen);
+			 (const struct sockaddr *) &destAddr, destLen);
       
       if(outMsgLen == -1) {
-				if(errno == EINTR) {
-					continue;
-				}
-				perror("sendto failure");
+	if(errno == EINTR) {
+	  continue;
+	}
+	perror("sendto failure");
       }
     }
   }
